@@ -1,0 +1,210 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Basic global tweaks */
+:root {
+  --max-width: 1100px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+  max-width: var(--max-width);
+}
+
+/* Scroller single-page styles */
+html,
+body {
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+/* Make sections snap to viewport */
+main {
+  /* keep natural scrolling for smooth transitions; parallax handled in JS */
+}
+
+section {
+  /* ensure each section stacks naturally; we avoid hard snapping for seamless feel */
+}
+
+
+.hero {
+  min-height: 100vh;
+  position: relative;
+  overflow: visible;
+}
+
+/* Make image fixed to viewport so it can overlap next section and be clipped to "reveal" projects */
+.hero .hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(0.95) contrast(0.95);
+  transition: transform 0.6s ease, opacity 0.3s ease;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.hero .hero-overlay {
+  position: relative;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.hero .hero-text {
+  max-width: 720px;
+  margin-left: 4%;
+  color: white;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+/* Remove vertical Tailwind spacing inside the projects stack so sections
+   can sit flush and use sticky stacking. */
+.projects-section .space-y-12>* {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.project-item {
+  /* Each project occupies viewport height but remains in normal flow.
+     The inner `.project-media-sticky` becomes sticky so incoming items
+     can overlay the previous ones by raising their z-index. */
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+  transition: opacity 0.35s ease;
+}
+
+.project-media {
+  width: min(1100px, 95%);
+  height: 60vh;
+  background: #111;
+  overflow: hidden;
+  border-radius: 12px;
+  position: relative;
+  transition: transform 0.6s cubic-bezier(.2, .9, .2, 1);
+  transform-origin: center center;
+}
+
+.project-media-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(.2, .9, .2, 1);
+  transform: scale(1);
+  will-change: transform;
+}
+
+/* subtle zoom on focus */
+.project-item .project-media-inner {
+  filter: brightness(0.95) saturate(0.95);
+}
+
+.project-item.in-focus .project-media-inner {
+  filter: brightness(1.05) saturate(1.1);
+}
+
+
+/* When a project item is being revealed/hidden we clip from the bottom. */
+.project-media-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+/* Smooth transforms and opacity for the sticky media wrapper to avoid snapping */
+.project-media-sticky {
+  transition: transform 0.45s cubic-bezier(.2, .9, .2, 1), opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+
+.project-media img,
+.project-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Stack media: image below video, caption above */
+.project-media img {
+  position: relative;
+  z-index: 10;
+  opacity: 1;
+  transition: opacity .45s ease;
+}
+
+.project-media video {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity .45s ease, transform .6s ease;
+}
+
+.project-item.in-focus .project-media video {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.project-item.in-focus .project-media img {
+  opacity: 0;
+}
+
+.project-caption {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  color: white;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+
+  background: linear-gradient(to top,
+      rgba(0, 0, 0, 0.5),
+      rgba(0, 0, 0, 0.1));
+  backdrop-filter: blur(6px);
+}
+
+.contact-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center
+}
+
+body {
+  transition: background-color 0.6s ease;
+}
+
+body.bg-black {
+  background-color: black !important;
+}
+
+/* When we switch the body to black during the reveal/hide animation,
+   keep the hero overlay background black so there is no visible gap
+   between the hero and the projects section during transitions. */
+body.bg-black .hero .hero-overlay {
+  background-color: black;
+}
