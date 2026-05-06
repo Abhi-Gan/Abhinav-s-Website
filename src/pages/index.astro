@@ -1,0 +1,142 @@
+---
+import Base from '../layouts/Base.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import ProjectCard from '../components/ProjectCard.astro'
+
+const projects = [
+  {
+    title: 'Plunger',
+    description: 'Created an iPhone app to crowdsource finding public restrooms via Swift (Storyboard/UIKit).',
+    image: '/images/gallery/thumbs/Plunger_thumb.png',
+    video: '/images/gallery/fulls/plunger_short_preview.mp4',
+    link: 'https://youtu.be/81HNSXE7mfA'
+  },
+  {
+    title: 'Backdoor for Command and Control',
+    description: 'Created backdoor on exploitable machine (CentOS) that is persistent, configurable, utilizes authenticated communication, and avoids certain detection techniques.',
+    image: '/images/gallery/thumbs/Backdoor_thumb.png',
+    video: '/images/gallery/fulls/Backdoor.mp4',
+    link: 'https://youtu.be/ozrPWuiPElg?si=IKoEI06_QQCbXhQk'
+  },
+  {
+    title: 'WordMap',
+    description: 'Interactive word visualization demo.',
+    image: '/images/gallery/thumbs/WordMap_thumb.png',
+    video: '/images/gallery/fulls/WordMap.mp4',
+    link: 'https://github.com/Abhi-Gan/LatitudeWithAttitude'
+  },
+  {
+    title: 'Speech-To-Text using HMMs',
+    description: 'isolated word recognizer utilizing Hidden Markov Models (HMMs) to predict spoken words based on audio input (.wav).',
+    image: '/images/gallery/thumbs/HMM_thumb.png',
+    video: '/images/gallery/fulls/HMM_code.mp4',
+    link: 'https://github.com/Abhi-Gan/LatitudeWithAttitude'
+  },
+  {
+    title: 'CurbCut',
+    description: 'Accessibility-focused routing Android application built for Esri Intern Hakathon 2023.',
+    image: '/images/gallery/thumbs/CurbCut_thumb.png',
+    video: '/images/gallery/fulls/curbcut.mp4',
+    link: 'https://devpost.com/software/temp-name-q1a2sm'
+  },
+  {
+    title: 'Legal Documents Retrieval System',
+    description: 'Developed legal case retrieval system supporting boolean and free text queries using Boolean Retrieval and Vector Space Model (TF-IDF).',
+    image: '/images/gallery/thumbs/Legal_Doc_Retrieval.png',
+    video: '/images/gallery/thumbs/Legal_Doc_Retrieval.png',
+    link: undefined
+  },
+  {
+    title: 'Light Years, Week Days',
+    description: 'Created interactive music installation outside of NUS\' conservatory of music as part of class project during my study abroad in Singapore.',
+    image: '/images/gallery/thumbs/LightYearsWeekDays_thumb.jpg',
+    video: '/images/gallery/thumbs/LightYearsWeekDays_thumb.jpg',
+    link: 'https://cfa.nus.edu.sg/naf2023/event/light-years-week-days/'
+  },
+  {
+    title: 'Acne Analysis',
+    description: 'ML demo for skin condition analysis.',
+    image: '/images/gallery/thumbs/AcneAnalysis_thumb.png',
+    video: '/images/gallery/fulls/AcneAnalysis.mp4',
+    link: 'https://github.com/Abhi-Gan/Acne_Analysis/blob/main/Final_Project.pdf'
+  },
+  {
+    title: `Sentiment Analysis of Homer's Odyssey`,
+    description: `Sentiment Analysis to Compare Characters across Translations of Homer's Odyssey`,
+    image: '/images/gallery/thumbs/homer_odyssey_cover.jpg',
+    video: '/images/gallery/thumbs/homer_odyssey_cover.jpg',
+    link: 'https://github.com/Abhi-Gan/Odyssey-Sentiment-Analysis/blob/main/Final%20Project%20Research%20Submission.pdf'
+  },
+  {
+    title: 'StudySmart',
+    description: 'I used NLP and ML to categorize questions from previously released AP Chemistry Exams to create much more usable study material.',
+    image: '/images/gallery/thumbs/StudySmart thumb.png',
+    video: '/images/gallery/fulls/StudySmart Preview.mp4',
+    link: undefined
+  },
+//  {
+//    title: `Porktaro's Bizarre Adventure`,
+//    description: 'My first major 2D Animation project inspired by a combination of anime and Peppa Pig.',
+//    image: '/images/gallery/thumbs/PvS preview.png',
+//    video: '/images/gallery/fulls/PvS preview.mp4',
+//    link: 'undefined
+//  },
+  {
+    title: `Electro Man`,
+    description: 'Inspired by Gravity Guy, I made my own multiplayer sidescroller game in Java.',
+    image: '/images/gallery/thumbs/Electro Man thumb.png',
+    video: '/images/gallery/fulls/Electro Man preview.mp4',
+    link: undefined
+  },
+  {
+    title: `VFX`,
+    description: 'I created Python scripts on Blender to make creating VFX easier to new beginners.',
+    image: '/images/gallery/thumbs/VFX thumb.png',
+    video: '/images/gallery/fulls/VFX Preview.mp4',
+    link: undefined
+  },
+]
+---
+
+<Base title="Abhinav Ganesh" description="Hi, I'm Abhinav">
+  <Header slot="header" />
+
+  <section id="intro" class="hero">
+    <div class="hero-image" style="background-image: url('images/gallery/thumbs/esri_hackathon_2024_small.jpg');"></div>
+    <div class="hero-overlay">
+      <div class="hero-text mx-auto px-6">
+        <h1 class="text-5xl md:text-6xl font-extrabold">Hi, I'm Abhinav.</h1>
+        <p class="mt-4 text-xl md:text-2xl text-white/90">I'm a recent Computer Science and Mathematics graduate from the University of Texas at Austin.</p>
+        <div class="mt-6">
+          <a class="btn btn-primary mr-3" href="#projects">See my work</a>
+          <a class="btn btn-ghost" href="/resume">Experience</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="projects-section scroll-mt-32 relative z-0 bg-black">
+    <div class="container mx-auto px-6">
+      <h2 class="text-7xl font-bold mb-6">Projects</h2>
+      <div class="space-y-12">
+        {projects.map(p => (
+          <ProjectCard title={p.title} description={p.description} image={p.image} video={p.video} link={p.link} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-12 bg-base-200">
+    <div class="container mx-auto px-6 text-center">
+      <h3 class="text-xl font-semibold mb-4">Get in touch</h3>
+      <div class="contact-links justify-center">
+        <a class="btn btn-outline" href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-outline" href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</Base>
+

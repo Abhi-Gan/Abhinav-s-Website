@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+
+const industry_experience = [
+  { role: 'Software Development Engineer', org: 'Amazon Leo', period: 'June 2025 - present'},
+  { role: 'Software Development Intern, Field Maps Team', org: 'Esri', period: 'May 2024 - August 2024'},
+  { role: 'Software Development Intern, Field Maps Team', org: 'Esri', period: 'May 2023 - August 2023'},
+  { role: 'Intern - Data Engineer Team', org: 'Optum', period: 'May 2023 - August 2023'}
+]
+
+const research_experience = [
+  { role: 'Undergraduate Research Assistant', org: 'Quantitative Criticism Lab', period: 'December 2023 - June 2025'},
+  { role: 'Undergraduate Research Assistant', org: 'Seton Stroke Institute/Department of Neurology', period: 'January 2022 - August 2024'},
+  { role: 'Undergraduate Research Assistant', org: 'Hutter Research Group', period: 'August 2021 - August 2023'}
+]
+---
+<Base title="Experience - Abhinav">
+  <Header slot="header" />
+
+  <article class="px-6">
+
+    <h2 class="text-2xl font-bold mb-4">Industry Experience</h2>
+    <section class="mb-8">
+      {industry_experience.map(e => (
+        <div class="mb-4">
+          <h3 class="font-semibold">{e.org}</span></h3>
+          <div class="text-sm text-muted">{e.role}</div>
+          <div class="text-sm text-muted">{e.period}</div>
+          <p class="mt-2">{e.details}</p>
+        </div>
+      ))}
+    </section>
+
+    <h2 class="text-2xl font-bold mb-4">Research Experience</h2>
+    <section class="mb-8">
+      {research_experience.map(e => (
+        <div class="mb-4">
+          <h3 class="font-semibold">{e.org}</span></h3>
+          <div class="text-sm text-muted">{e.role}</div>
+          <div class="text-sm text-muted">{e.period}</div>
+          <p class="mt-2">{e.details}</p>
+        </div>
+      ))}
+    </section>
+
+    <section>
+      <h3 class="text-lg font-semibold mb-2">Education & Skills</h3>
+      <p class="text-muted">B.Sc. in Mathematics and Computer Science - University of Texas at Austin</p>
+    </section>
+  </article>
+
+  <Footer slot="footer" />
+</Base>

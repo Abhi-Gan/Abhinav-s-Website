@@ -1,0 +1,25 @@
+---
+const { title = 'Abhinav Ganesh', description = 'Personal site' } = Astro.props
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/src/styles/global.css" />
+  </head>
+
+  <body class="bg-base-100 text-base-content">
+    <div class="min-h-screen flex flex-col">
+      <slot name="header" />
+      <main class="flex-1 w-full mx-auto px-0 py-0">
+        <slot />
+      </main>
+      <slot name="footer" />
+    </div>
+    <script src="/js/scroll.js" defer></script>
+  </body>
+</html>
