@@ -17,6 +17,7 @@ TODO items that we have not resolved.
 
 🛵 - relatively simple changes that can be implemented quickly
 
+<<<<<<< HEAD
 ## 💡 🛵 StudySmart SEO
 make more SEO - should be at the top of the search for https://www.reddit.com/r/APStudents/comments/17iztp6/previous_ap_chem_frqs_by_unit/
   - can even just link to that reddit post
@@ -50,6 +51,13 @@ I want the following:
 3) as the user scrolls down more, they get to the Projects section of my webpage. For the projects, when the project gets into focus, it should display the equivalent of what is currently the video + title, description, and details. When the project is not in focus it should appear as the static image that in the current site we use as the preview.
 4) if the user scrolls all the way to the bottom of the site, the last element should include links to my github and linkedin.
 5) the footer you have right now is fine as the very last thing the user sees.
+=======
+## 💡 🛵 StudySmart
+make more SEO - should be at the top of the search for https://www.reddit.com/r/APStudents/comments/17iztp6/previous_ap_chem_frqs_by_unit/
+
+## 🟡 🚚 Refactor Website
+I'm thinking of revamping my personal website. Previously I used HTML5UP and then personal coding knowledge to make the site more customized. My main goals is with the site revamp is to make the site more mobile-friendly and look more modern. The functionality is pretty simple; it just needs to be a static site that: 1) has a main area to introduce myself 2) has a gallery where I can show off my projects in a desired order 3) have some sort of experience/cv page Open to just switching to whatever is the hottest new UI+frontend framework. I use github pages tho so keep that in minde
+>>>>>>> origin
 
 ## 💡 🚗 Delete Unused Code
 remove any references to unused code. Code history exists on github anyways.
