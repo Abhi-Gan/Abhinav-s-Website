@@ -1,0 +1,308 @@
+---
+import Base from "../../../layouts/Base.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+import studysmart_data from "./studysmart_model_predictions.json";
+
+const data = studysmart_data;
+---
+
+<Base title="StudySmart - AP Chemistry" theme="forest">
+  <meta
+    name="description"
+    content="Search all AP Chemistry free-response questions organized by unit, year, and topic. Includes subquestions and full exam prompts."
+  />
+
+  <Header slot="header" />
+
+  <article class="px-6">
+    <!-- Title -->
+    <div class="text-center mb-6">
+      <h1 class="text-3xl font-bold">StudySmart: AP Chemistry</h1>
+      <p class="text-base-content/70 mt-2">
+        Using NLP to categorize AP Chemistry FRQs by unit.
+      </p>
+    </div>
+
+    <!-- Filters -->
+    <div class="card bg-base-100 shadow p-4 mb-6">
+      <div class="grid md:grid-cols-3 gap-4">
+        <select id="model_prediction" class="select select-bordered w-full">
+          <option value="">All Units</option>
+        </select>
+
+        <select id="source" class="select select-bordered w-full">
+          <option value="">All Sources</option>
+        </select>
+
+        <input
+          id="query"
+          class="input input-bordered w-full"
+          placeholder="Search for Keywords"
+        />
+      </div>
+
+      <div class="text-right mt-4">
+        <button id="filter" class="btn btn-primary"> Filter </button>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="space-y-1 mb-6 text-sm text-base-content/70">
+      <p>
+        All AP Chemistry FRQs, 2014-2021, categorized by unit using a
+        custom-trained NLP model. Units are based on the official College Board
+        course description, but questions are not guaranteed to be perfectly
+        categorized since the model is not 100% accurate. Use the filters and
+        search to find questions by unit, year, topic, or keywords in the
+        question text.
+      </p>
+      <br />
+      <p class="text-error">Model last trained: May 2021.</p>
+      <p><span class="text-warning">Source: Hyperlink to pdf containing original questions; may not be available for all years.</span></p>
+      <p>Validated Label: Unit of question is known / manually validated.</p>
+      <p>Prediction Label: Unit of question is an unvalidated prediction.</p>
+      <!-- <p>Scraped Text = OCR extracted FRQ content</p> -->
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-auto h-[70vh]">
+      <table class="table table-zebra w-full">
+        <thead class="sticky top-0 bg-base-100 z-10">
+          <tr>
+            <th>Text Preview</th>
+            <th>Source</th>
+            <th>Question</th>
+            <th>Subquestion</th>
+            <th>Predicted Unit</th>
+            <th>Labels</th>
+            <!-- <th>Scraped Text</th> -->
+          </tr>
+        </thead>
+
+        <tbody id="results-body"></tbody>
+      </table>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+
+  <!-- Client-side logic (scoped, no fetch) -->
+  <script define:vars={{ data }}>
+    const tbody = document.getElementById("results-body");
+
+    const ROW_HEIGHT = 52; // adjust if needed
+    const BUFFER = 8;
+
+    let filteredData = [...data];
+    let activeTerms = [];
+
+    function createSnippetHTML(text, terms) {
+      if (!text) return "";
+
+      const lower = text.toLowerCase();
+
+      // find earliest occurring term
+      let firstIdx = -1;
+
+      for (const term of terms) {
+        const idx = lower.indexOf(term.toLowerCase());
+
+        if (idx !== -1 && (firstIdx === -1 || idx < firstIdx)) {
+          firstIdx = idx;
+        }
+      }
+
+      // fallback if no matches somehow
+      if (firstIdx === -1) {
+        return text.slice(0, 100) + "...";
+      }
+
+      const start = Math.max(0, firstIdx - 40);
+      const end = Math.min(text.length, firstIdx + 100);
+
+      let snippet = text.slice(start, end);
+
+      // highlight ALL terms
+      terms.forEach((term) => {
+        const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+        const regex = new RegExp(`(${escaped})`, "gi");
+
+        snippet = snippet.replace(
+          regex,
+          `<mark class="bg-warning text-warning-content px-1 rounded">$1</mark>`,
+        );
+      });
+
+      return `...${snippet}...`;
+    }
+
+    function renderVisible(startIndex = 0) {
+      const container = tbody.parentElement;
+
+      const scrollTop = container.scrollTop;
+      const visibleCount = Math.ceil(container.clientHeight / ROW_HEIGHT);
+
+      const start = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - BUFFER);
+      const end = Math.min(
+        filteredData.length,
+        start + visibleCount + BUFFER * 2,
+      );
+
+      tbody.innerHTML = "";
+
+      // spacer top
+      const topSpacer = document.createElement("tr");
+      topSpacer.style.height = `${start * ROW_HEIGHT}px`;
+      tbody.appendChild(topSpacer);
+
+      for (let i = start; i < end; i++) {
+        const row = filteredData[i];
+
+        const tr = document.createElement("tr");
+
+        // badge cell
+        function addBadgeCell(unit, model_prediction) {
+          const isValidated = unit === model_prediction;
+
+          const badgeTd = document.createElement("td");
+          const badge = document.createElement("span");
+
+          badge.className = isValidated
+            ? "badge badge-success"
+            : "badge badge-info";
+
+          badge.textContent = isValidated ? "Validated" : "Prediction";
+
+          badgeTd.appendChild(badge);
+          tr.appendChild(badgeTd);
+        }
+
+        function extractYear(source) {
+          const match = source?.match(/\d{4}/);
+          return match ? match[0] : null;
+        }
+
+        function getSourceURL(source) {
+          const year = extractYear(source);
+          if (year >= 2022 && year <= 2025) {
+            return `https://web.archive.org/web/20250707113033/https://apcentral.collegeboard.org/media/pdf/ap${String(year).slice(-2)}-frq-chemistry.pdf`;
+          } else if (year >= 2014 && year <= 2021) {
+            return `https://pub-309627a4b35a4d56b9c2c5dc71e64ebf.r2.dev/courses/AP%20Chemistry/${year}/Free-Response%20Questions.pdf`;
+          }
+          // case year === 2019:
+          //   return URL('https://web.archive.org/web/20250311233140/https://apcentral.collegeboard.org/media/pdf/ap19-frq-chemistry.pdf');
+          // case year === 2018:
+          //   return URL('https://web.archive.org/web/20240224103528/https://secure-media.collegeboard.org/apc/ap18-frq-chemistry.pdf');
+          // case year >= 2002 && year <= 2011:
+          //   // check what form number to use
+          //   return URL(`https://apfrqs.com/course/AP%20Chemistry?view=year`);
+          else {
+            return null;
+          }
+        }
+
+        function addSourceCell(source) {
+          const sourceTd = document.createElement("td");
+          const sourceURL = getSourceURL(source);
+          console.log({ source, sourceURL });
+          if (sourceURL) {
+            const a = document.createElement("a");
+            // from https://apfrqs.com/course/AP%20Chemistry?view=year
+            a.href = sourceURL;
+            a.textContent = source;
+            a.className = "link link-primary";
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            sourceTd.appendChild(a);
+          } else {
+            sourceTd.textContent = source ?? "";
+          }
+          tr.appendChild(sourceTd);
+        }
+
+        // helper to reduce repetition
+        function addCell(value) {
+          const td = document.createElement("td");
+          td.textContent = value ?? "";
+          tr.appendChild(td);
+        }
+
+        function addSnippetCell(text) {
+          const td = document.createElement("td");
+          td.innerHTML = createSnippetHTML(text, activeTerms);
+          tr.appendChild(td);
+        }
+
+        addSnippetCell(row.Text);
+        addSourceCell(row.Source);
+        addCell(row.Question);
+        addCell(row.subquestion);
+        addCell(row.Model_Prediction);
+        addBadgeCell(row.Unit, row.Model_Prediction);
+
+        tbody.appendChild(tr);
+      }
+
+      // spacer bottom
+      const bottomSpacer = document.createElement("tr");
+      bottomSpacer.style.height = `${(filteredData.length - end) * ROW_HEIGHT}px`;
+      tbody.appendChild(bottomSpacer);
+    }
+
+    function populateFilters() {
+      const mpSet = new Set();
+      const sourceSet = new Set();
+
+      data.forEach((d) => {
+        if (d.Model_Prediction) mpSet.add(d.Model_Prediction);
+        if (d.Source) sourceSet.add(d.Source);
+      });
+
+      const mpSelect = document.getElementById("model_prediction");
+      const sourceSelect = document.getElementById("source");
+
+      [...mpSet].sort().forEach((v) => {
+        mpSelect.appendChild(new Option(v, v));
+      });
+
+      [...sourceSet].sort().forEach((v) => {
+        sourceSelect.appendChild(new Option(v, v));
+      });
+    }
+
+    function applyFilter() {
+      const mp = document.getElementById("model_prediction").value;
+      const source = document.getElementById("source").value;
+      const query = document.getElementById("query").value.toLowerCase().trim();
+      activeTerms = query.split(/\s+/).filter(Boolean);
+
+      filteredData = data.filter((item) => {
+        const text = (item.Text ?? "").toLowerCase();
+
+        const matchesQuery =
+          !activeTerms.length || activeTerms.every((t) => text.includes(t));
+
+        return (
+          (!mp || item.Model_Prediction === mp) &&
+          (!source || item.Source === source) &&
+          matchesQuery
+        );
+      });
+
+      renderVisible();
+    }
+
+    document.getElementById("filter").addEventListener("click", applyFilter);
+
+    // attach scroll listener
+    document.querySelector(".overflow-auto").addEventListener("scroll", () => {
+      renderVisible();
+    });
+
+    // init
+    populateFilters();
+    renderVisible();
+  </script>
+</Base>

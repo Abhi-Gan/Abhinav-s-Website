@@ -1,8 +1,13 @@
 ---
 import "../styles/global.css";
 
-const { title = 'Abhinav Ganesh', description = 'Personal site' } = Astro.props
+const {
+  title = "Abhinav Ganesh",
+  description = "Personal site",
+  theme = "coffee",
+} = Astro.props;
 ---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,7 +18,7 @@ const { title = 'Abhinav Ganesh', description = 'Personal site' } = Astro.props
     <link rel="icon" href="/favicon.ico" />
   </head>
 
-  <body class="bg-base-100 text-base-content">
+  <body class="bg-base-100 text-base-content" data-theme={theme}>
     <div class="min-h-screen flex flex-col">
       <slot name="header" />
       <main class="flex-1 w-full mx-auto px-0 py-0">

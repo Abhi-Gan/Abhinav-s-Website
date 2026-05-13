@@ -15,3 +15,9 @@ Notes:
 - Styles: `src/styles/global.css` (Tailwind + DaisyUI)
 
 Replace the sample images under `public/images` with your originals and update project data arrays in pages.
+
+Testing pre-deployment:
+```bash
+npm run build
+npm run preview
+```
