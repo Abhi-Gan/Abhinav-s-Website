@@ -3,18 +3,63 @@ import Base from '../layouts/Base.astro'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 
+class ExperienceEntry {
+  role: string
+  org: string
+  period: string
+  details?: string
+
+  constructor(role: string, org: string, period: string, details?: string) {
+    this.role = role
+    this.org = org
+    this.period = period
+    this.details = details
+  }
+}
+
+class EducationEntry {
+  degree: string
+  institution: string
+  period: string
+
+  constructor(degree: string, institution: string, period: string) {
+    this.degree = degree
+    this.institution = institution
+    this.period = period
+  }
+}
+
 const industry_experience = [
-  { role: 'Software Development Engineer', org: 'Amazon Leo', period: 'June 2025 - present'},
-  { role: 'Software Development Intern, Field Maps Team', org: 'Esri', period: 'May 2024 - August 2024'},
-  { role: 'Software Development Intern, Field Maps Team', org: 'Esri', period: 'May 2023 - August 2023'},
-  { role: 'Intern - Data Engineer Team', org: 'Optum', period: 'May 2023 - August 2023'}
+  new ExperienceEntry('Software Development Engineer', 'Amazon Leo', 'June 2025 - July 2026'),
+  new ExperienceEntry('Software Development Intern, Field Maps Team', 'Esri', 'May 2024 - August 2024'),
+  new ExperienceEntry('Software Development Intern, Field Maps Team', 'Esri', 'May 2023 - August 2023'),
+  new ExperienceEntry('Intern - Data Engineer Team', 'Optum', 'May 2023 - August 2023')
 ]
 
 const research_experience = [
-  { role: 'Undergraduate Research Assistant', org: 'Quantitative Criticism Lab', period: 'December 2023 - June 2025'},
-  { role: 'Undergraduate Research Assistant', org: 'Seton Stroke Institute/Department of Neurology', period: 'January 2022 - August 2024'},
-  { role: 'Undergraduate Research Assistant', org: 'Hutter Research Group', period: 'August 2021 - August 2023'}
+  new ExperienceEntry('Undergraduate Research Assistant', 'Quantitative Criticism Lab', 'December 2023 - June 2025'),
+  new ExperienceEntry('Undergraduate Research Assistant', 'Seton Stroke Institute/Department of Neurology', 'January 2022 - August 2024'),
+  new ExperienceEntry('Undergraduate Research Assistant', 'Hutter Research Group', 'August 2021 - August 2023')
 ]
+
+const education_experience = [
+  new EducationEntry(
+    'Masters of Science in Computational Math and Engineering, Data Science Track', 
+    'Stanford University', 
+    'September 2026 - June 2028'
+  ),
+  new EducationEntry(
+    'Bachelor of Science in Computer Science', 
+    'The University of Texas at Austin', 
+    'August 2021 - May 2025'
+  ),
+  new EducationEntry(
+    'Bachelor of Science in Mathematics', 
+    'The University of Texas at Austin', 
+    'August 2021 - May 2025'
+  )
+]
+
 ---
 <Base title="Experience - Abhinav">
   <Header slot="header" />
@@ -28,7 +73,7 @@ const research_experience = [
           <h3 class="font-semibold">{e.org}</span></h3>
           <div class="text-sm text-muted">{e.role}</div>
           <div class="text-sm text-muted">{e.period}</div>
-          <p class="mt-2">{e.details}</p>
+          <p class="mt-2">{e?.details}</p>
         </div>
       ))}
     </section>
@@ -40,15 +85,22 @@ const research_experience = [
           <h3 class="font-semibold">{e.org}</span></h3>
           <div class="text-sm text-muted">{e.role}</div>
           <div class="text-sm text-muted">{e.period}</div>
-          <p class="mt-2">{e.details}</p>
+          <p class="mt-2">{e?.details}</p>
         </div>
       ))}
     </section>
 
+    <h3 class="text-2xl font-bold mb-2">Education & Skills</h3>
     <section>
-      <h3 class="text-lg font-semibold mb-2">Education & Skills</h3>
-      <p class="text-muted">Bachelor of Science in Computer Science - The University of Texas at Austin</p>
-      <p class="text-muted">Bachelor of Science in Mathematics - The University of Texas at Austin</p>
+      {
+        education_experience.map(e => (
+          <div class="mb-4">
+            <h3 class="font-semibold">{e.institution}</span></h3>
+            <div class="text-sm text-muted">{e.degree}</div>
+            <div class="text-sm text-muted">{e.period}</div>
+          </div>
+        ))
+      }
     </section>
   </article>
 
