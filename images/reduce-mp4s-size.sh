@@ -12,13 +12,19 @@ find "$TARGET_DIR" -type f -name "*.mp4" | while read -r file; do
 
   tmp="${file%.mp4}_tmp.mp4"
 
+# scale width down to < 1440 (maintain aspect ratio)
+# reduce framerate to 12 fps
+# compress using H.264 codec with CRF 25 and slow preset
+# no audio
+# optimize for web streaming
   ffmpeg -y -i "$file" \
-    -vf "scale=480:-2" \
+    -vf "scale='min(3840,iw)':-2" \
     -r 10 \
     -c:v libx264 \
-    -crf 32 \
+    -crf 29 \
     -preset slow \
     -pix_fmt yuv420p \
+    -an \
     -movflags faststart \
     "$tmp"
 
