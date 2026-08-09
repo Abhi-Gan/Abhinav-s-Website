@@ -17,6 +17,9 @@ TODO items that we have not resolved.
 
 🛵 - relatively simple changes that can be implemented quickly
 
+## 💡 🚗 Switch deployment flow
+Switch deployment flow from peaceiris to GitHub's native Pages deployment. ChatGPT says this is newer.
+
 ## 💡 🛵 StudySmart SEO
 make more SEO - should be at the top of the search for https://www.reddit.com/r/APStudents/comments/17iztp6/previous_ap_chem_frqs_by_unit/
   - can even just link to that reddit post

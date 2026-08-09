@@ -23,6 +23,7 @@ npm run preview
 ```
 
 # Personal Setup
+
 ## Pre-Commit Checks
 A pre-commit script 
 ```
@@ -42,3 +43,7 @@ Tip: Try reducing image resolution or exporting as WebP.
 
 You can use 'public/images/reduce-mp4s-size.sh' to reduce the size of videos.
 'public/images/gif-to-mp4.sh' can be used to convert gifs to mp4, whichc can then be reduced in size.
+
+## Deployment
+When any commit gets merged into the `main`, `.github/workflows/deploy.yml` runs. This pushes the commit to the branch `gh-pages` and redeploys the site.
+
