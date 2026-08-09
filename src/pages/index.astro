@@ -4,7 +4,30 @@ import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import ProjectCard from '../components/ProjectCard.astro'
 
-const projects = [
+class ProjectEntry {
+  title: string
+  description: string
+  image: string
+  video: string
+  link?: string
+
+  constructor(title: string, description: string, image: string, video: string, link?: string) {
+    this.title = title
+    this.description = description
+    this.image = image
+    this.video = video
+    this.link = link
+  }
+}
+
+const projects: ProjectEntry[] = [
+  {
+    title: 'GetThaSubs',
+    description: 'Created a Web App to help diaspora language learners improve their comprehension using YouTube video subtitles.',
+    image: '/images/gallery/thumbs/GetThaSubs_thumb.jpg',
+    video: '/images/gallery/fulls/GetThaSubs_preview.mp4',
+    link: 'https://getthasubs.org/'
+  },
   {
     title: 'Plunger',
     description: 'Created an iPhone app to crowdsource finding public restrooms via Swift (Storyboard/UIKit).',
@@ -31,7 +54,7 @@ const projects = [
     description: 'isolated word recognizer utilizing Hidden Markov Models (HMMs) to predict spoken words based on audio input (.wav).',
     image: '/images/gallery/thumbs/HMM_thumb.png',
     video: '/images/gallery/fulls/HMM_code.mp4',
-    link: 'https://github.com/Abhi-Gan/LatitudeWithAttitude'
+    link: undefined // https://github.com/Abhi-Gan/CS342s-Lab4
   },
   {
     title: 'CurbCut',
@@ -75,20 +98,13 @@ const projects = [
     video: '/images/gallery/fulls/StudySmart Preview.mp4',
     link: '/projects/studysmart/ap-chemistry-frqs-by-unit'
   },
-//  {
-//    title: `Porktaro's Bizarre Adventure`,
-//    description: 'My first major 2D Animation project inspired by a combination of anime and Peppa Pig.',
-//    image: '/images/gallery/thumbs/PvS preview.png',
-//    video: '/images/gallery/fulls/PvS preview.mp4',
-//    link: 'undefined
-//  },
-  {
-    title: `Electro Man`,
-    description: 'Inspired by Gravity Guy, I made my own multiplayer sidescroller game in Java.',
-    image: '/images/gallery/thumbs/Electro Man thumb.png',
-    video: '/images/gallery/fulls/Electro Man preview.mp4',
-    link: undefined
-  },
+  // {
+  //   title: `Electro Man`,
+  //   description: 'Inspired by Gravity Guy, I made my own multiplayer sidescroller game in Java.',
+  //   image: '/images/gallery/thumbs/Electro Man thumb.png',
+  //   video: '/images/gallery/fulls/Electro Man preview.mp4',
+  //   link: undefined
+  // },
   {
     title: `VFX`,
     description: 'I created Python scripts on Blender to make creating VFX easier to new beginners.',
@@ -107,7 +123,14 @@ const projects = [
     <div class="hero-overlay">
       <div class="hero-text mx-auto px-6">
         <h1 class="text-5xl md:text-6xl font-extrabold">Hi, I'm Abhinav.</h1>
-        <p class="mt-4 text-xl md:text-2xl text-white/90">I'm a recent Computer Science and Mathematics graduate from The University of Texas at Austin.</p>
+        <p class="mt-4 text-xl md:text-2xl text-white/90">
+          I'm a master's student at Stanford University's <a href="https://icme.stanford.edu/" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">Institute of Computational and Mathematical Engineering</a>.
+          Before Stanford, I studied 
+          <a href="https://www.cs.utexas.edu/" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">Computer Science</a> 
+          and 
+          <a href="https://www.math.utexas.edu/" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline">Mathematics</a> 
+          at the University of Texas at Austin.
+        </p>
         <div class="mt-6">
           <a class="btn btn-primary mr-3" href="#projects">See my work</a>
           <a class="btn btn-ghost" href="/resume">Experience</a>
